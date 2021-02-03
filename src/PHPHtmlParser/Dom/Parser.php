@@ -30,7 +30,7 @@ class Parser implements ParserInterface
      * @throws LogicalException
      * @throws StrictException
      */
-    public function parse(Options $options, Content $content, int $size): AbstractNode
+    public function parse(Options $options, Content $content): AbstractNode
     {
         // add the root node
         $root = new HtmlNode('root');
@@ -45,7 +45,7 @@ class Parser implements ParserInterface
                 $str = $content->copyUntil('<');
             }
             if ($str == '') {
-                $tagDTO = $this->parseTag($options, $content, $size);
+                $tagDTO = $this->parseTag($options, $content, $content->getSize());
                 if (!$tagDTO->isStatus()) {
                     // we are done here
                     $activeNode = null;
@@ -87,7 +87,7 @@ class Parser implements ParserInterface
                 \trim($str) != ''
             ) {
                 // we found text we care about
-                $textNode = new TextNode($str, $options->isRemoveDoubleSpace());
+                $textNode = new TextNode($str);
                 $textNode->setHtmlSpecialCharsDecode($options->isHtmlSpecialCharsDecode());
                 $activeNode->addChild($textNode);
             }

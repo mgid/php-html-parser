@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PHPHtmlParser\Dom\Node;
 
 use PHPHtmlParser\Dom\Tag;
-use PHPHtmlParser\Exceptions\LogicalException;
 
 /**
  * Class TextNode.
@@ -43,22 +42,10 @@ class TextNode extends LeafNode
     /**
      * Sets the text for this node.
      *
-     * @param bool $removeDoubleSpace
+     * @param string $text
      */
-    public function __construct(string $text, $removeDoubleSpace = true)
+    public function __construct(string $text)
     {
-        if ($removeDoubleSpace) {
-            // remove double spaces
-            $replacedText = \mb_ereg_replace('\s+', ' ', $text);
-            if ($replacedText === false) {
-                throw new LogicalException('mb_ereg_replace returns false when attempting to clean white space from "' . $text . '".');
-            }
-            if ($replacedText === null) {
-                throw new LogicalException('mb_ereg_replace encountered an invalid encoding for "' . $text . '".');
-            }
-            $text = $replacedText;
-        }
-
         // restore line breaks
         $text = \str_replace('&#10;', "\n", $text);
 

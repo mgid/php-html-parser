@@ -126,7 +126,7 @@ class Dom implements DomInterface
             $request = new Request('GET', $url);
         }
 
-        $response = $client->sendRequest($request);
+        $response = $client->request($request->getMethod(), $request->getUri());
         $content = $response->getBody()->getContents();
 
         return $this->loadStr($content, $options);
@@ -156,7 +156,7 @@ class Dom implements DomInterface
 
         $this->content = new Content($html);
 
-        $this->root = $this->domParser->parse($localOptions, $this->content, \strlen($str));
+        $this->root = $this->domParser->parse($localOptions, $this->content);
         $this->domParser->detectCharset($localOptions, $this->defaultCharset, $this->root);
 
         return $this;

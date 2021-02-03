@@ -104,6 +104,17 @@ class Cleaner implements CleanerInterface
             }
         }
 
+        // remove double spaces
+        if ($options->isRemoveDoubleSpace()) {
+            $str = \mb_ereg_replace('\s+', ' ', $str);
+            if ($str === false) {
+                throw new LogicalException('mb_ereg_replace returns false when attempting to clean white space from "' . $str . '".');
+            }
+            if ($str === null) {
+                throw new LogicalException('mb_ereg_replace encountered an invalid encoding for "' . $str . '".');
+            }
+        }
+
         return $str;
     }
 

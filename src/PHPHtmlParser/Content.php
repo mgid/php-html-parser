@@ -55,6 +55,14 @@ class Content
     }
 
     /**
+     * Returns the size of the content.
+     */
+    public function getSize(): int
+    {
+        return $this->size;
+    }
+
+    /**
      * Returns the current position of the content.
      */
     public function getPosition(): int

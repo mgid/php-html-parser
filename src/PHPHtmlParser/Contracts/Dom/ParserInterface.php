@@ -22,7 +22,7 @@ interface ParserInterface
      * @throws LogicalException
      * @throws StrictException
      */
-    public function parse(Options $options, Content $content, int $size): AbstractNode;
+    public function parse(Options $options, Content $content): AbstractNode;
 
     /**
      * Attempts to detect the charset that the html was sent in.
