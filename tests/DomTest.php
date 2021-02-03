@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class DomTest extends TestCase
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         Mockery::close();
     }
@@ -79,21 +79,21 @@ class DomTest extends TestCase
     public function testLoadWithFile()
     {
         $dom = new Dom();
-        $dom->loadFromFile('tests/data/files/small.html');
+        $dom->loadFromFile(dirname(__FILE__) . '/data/files/small.html');
         $this->assertEquals('VonBurgermeister', $dom->find('.post-user font', 0)->text);
     }
 
     public function testLoadFromFile()
     {
         $dom = new Dom();
-        $dom->loadFromFile('tests/data/files/small.html');
+        $dom->loadFromFile(dirname(__FILE__) . '/data/files/small.html');
         $this->assertEquals('VonBurgermeister', $dom->find('.post-user font', 0)->text);
     }
 
     public function testLoadFromFileFind()
     {
         $dom = new Dom();
-        $dom->loadFromFile('tests/data/files/small.html');
+        $dom->loadFromFile(dirname(__FILE__) . '/data/files/small.html');
         $this->assertEquals('VonBurgermeister', $dom->find('.post-row div .post-user font', 0)->text);
     }
 
@@ -101,7 +101,7 @@ class DomTest extends TestCase
     {
         $dom = new Dom();
         $this->expectException(\PHPHtmlParser\Exceptions\LogicalException::class);
-        $dom->loadFromFile('tests/data/files/unkowne.html');
+        $dom->loadFromFile(dirname(__FILE__) . '/data/files/unkowne.html');
     }
 
     public function testLoadUtf8()
@@ -115,7 +115,7 @@ class DomTest extends TestCase
     {
         $dom = new Dom();
         $dom->setOptions((new Options())->setCleanupInput(false));
-        $dom->loadFromFile('tests/data/files/whitespace.html');
+        $dom->loadFromFile(dirname(__FILE__) . '/data/files/whitespace.html');
         $this->assertEquals(1, \count($dom->find('.class')));
         $this->assertEquals('<span><span class="class"></span></span>', (string) $dom);
     }
@@ -123,14 +123,14 @@ class DomTest extends TestCase
     public function testLoadFileBig()
     {
         $dom = new Dom();
-        $dom->loadFromFile('tests/data/files/big.html');
+        $dom->loadFromFile(dirname(__FILE__) . '/data/files/big.html');
         $this->assertEquals(20, \count($dom->find('.content-border')));
     }
 
     public function testLoadFileBigTwice()
     {
         $dom = new Dom();
-        $dom->loadFromFile('tests/data/files/big.html');
+        $dom->loadFromFile(dirname(__FILE__) . '/data/files/big.html');
         $post = $dom->find('.post-row', 0);
         $this->assertEquals(' <p>Журчанье воды<br /> Черно-белые тени<br /> Вновь на фонтане</p> ', $post->find('.post-message', 0)->innerHtml);
     }
@@ -138,7 +138,7 @@ class DomTest extends TestCase
     public function testLoadFileBigTwicePreserveOption()
     {
         $dom = new Dom();
-        $dom->loadFromFile('tests/data/files/big.html',
+        $dom->loadFromFile(dirname(__FILE__) . '/data/files/big.html',
             (new Options())->setPreserveLineBreaks(true));
         $post = $dom->find('.post-row', 0);
         $this->assertEquals(
@@ -152,13 +152,13 @@ class DomTest extends TestCase
         $streamMock = Mockery::mock(\Psr\Http\Message\StreamInterface::class);
         $streamMock->shouldReceive('getContents')
             ->once()
-            ->andReturn(\file_get_contents('tests/data/files/small.html'));
+            ->andReturn(\file_get_contents(dirname(__FILE__) . '/data/files/small.html'));
         $responseMock = Mockery::mock(\Psr\Http\Message\ResponseInterface::class);
         $responseMock->shouldReceive('getBody')
             ->once()
             ->andReturn($streamMock);
         $clientMock = Mockery::mock(\Psr\Http\Client\ClientInterface::class);
-        $clientMock->shouldReceive('sendRequest')
+        $clientMock->shouldReceive('request')
             ->once()
             ->andReturn($responseMock);
 
@@ -227,7 +227,7 @@ class DomTest extends TestCase
     {
         $dom = new Dom();
         $dom->loadStr('<strong>hello</strong><code class="language-php">$foo = "bar";</code>');
-        $this->assertInternalType('array', $dom->getChildren());
+        $this->assertIsArray($dom->getChildren());
     }
 
     public function testHasChildren()
@@ -415,7 +415,7 @@ EOF;
     {
         $dom = new Dom();
         $dom->setOptions((new Options())->setWhitespaceTextNode(false));
-        $dom->loadFromFile('tests/data/files/51children.html');
+        $dom->loadFromFile(dirname(__FILE__) . '/data/files/51children.html');
         $children = $dom->find('#red-line-g *');
         $this->assertEquals(25, \count($children));
     }
@@ -423,7 +423,7 @@ EOF;
     public function testHtml5PageloadStr()
     {
         $dom = new Dom();
-        $dom->loadFromFile('tests/data/files/html5.html');
+        $dom->loadFromFile(dirname(__FILE__) . '/data/files/html5.html');
 
         /** @var Node\AbstractNode $meta */
         $div = $dom->find('div.d-inline-block', 0);

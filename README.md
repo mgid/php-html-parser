@@ -54,7 +54,7 @@ require "vendor/autoload.php";
 use PHPHtmlParser\Dom;
 
 $dom = new Dom;
-$dom->loadFromFile('tests/data/big.html');
+$dom->loadFromFile(dirname(__FILE__) . '/data/big.html');
 $contents = $dom->find('.content-border');
 echo count($contents); // 10
 

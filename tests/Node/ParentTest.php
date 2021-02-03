@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-require_once 'tests/data/MockNode.php';
+require_once dirname(__FILE__, 2) . '/data/MockNode.php';
 
 use PHPHtmlParser\Dom\Node\MockNode as Node;
 use PHPUnit\Framework\TestCase;
@@ -246,33 +246,27 @@ class NodeParentTest extends TestCase
         $this->assertFalse($parent->isChild($child->id()));
     }
 
-    /**
-     * @expectedException \PHPHtmlParser\Exceptions\CircularException
-     */
     public function testSetParentDescendantException()
     {
+        $this->expectException(\PHPHtmlParser\Exceptions\CircularException::class);
         $parent = new Node();
         $child = new Node();
         $parent->addChild($child);
         $parent->setParent($child);
     }
 
-    /**
-     * @expectedException \PHPHtmlParser\Exceptions\CircularException
-     */
     public function testAddChildAncestorException()
     {
+        $this->expectException(\PHPHtmlParser\Exceptions\CircularException::class);
         $parent = new Node();
         $child = new Node();
         $parent->addChild($child);
         $child->addChild($parent);
     }
 
-    /**
-     * @expectedException \PHPHtmlParser\Exceptions\CircularException
-     */
     public function testAddItselfAsChild()
     {
+        $this->expectException(\PHPHtmlParser\Exceptions\CircularException::class);
         $parent = new Node();
         $parent->addChild($parent);
     }

@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-require_once 'tests/data/MockNode.php';
+require_once dirname(__FILE__, 2) . '/data/MockNode.php';
 
 use PHPHtmlParser\Dom;
 use PHPHtmlParser\Dom\Node\HtmlNode;
@@ -66,11 +66,9 @@ class NodeHtmlTest extends TestCase
         $this->assertEquals($inner, $parent->innerHtml());
     }
 
-    /**
-     * @expectedException \PHPHtmlParser\Exceptions\UnknownChildTypeException
-     */
     public function testInnerHtmlUnkownChild()
     {
+        $this->expectException(\PHPHtmlParser\Exceptions\UnknownChildTypeException::class);
         $div = new Tag('div');
         $div->setAttributes([
             'class' => [
@@ -501,11 +499,9 @@ class NodeHtmlTest extends TestCase
         $this->assertEquals(2, $children);
     }
 
-    /**
-     * @expectedException \PHPHtmlParser\Exceptions\ParentNotFoundException
-     */
     public function testAncestorByTagFailure()
     {
+        $this->expectException(\PHPHtmlParser\Exceptions\ParentNotFoundException::class);
         $a = new Tag('a');
         $node = new HtmlNode($a);
         $node->ancestorByTag('div');
